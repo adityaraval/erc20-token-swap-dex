@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   useDispatch,
   useSelector,
@@ -35,6 +35,7 @@ const MyFirstToken = () => {
   const contract = useSelector(contractSelector,shallowEqual);
   const dispatch = useDispatch();
   const [ethVal, setEthValue] = useState(0);
+  const rate = 100;
   const connectAccount = async (e) => {
       e.preventDefault();
       const myWeb3 = await loadWeb3(dispatch);
@@ -45,13 +46,14 @@ const MyFirstToken = () => {
   }
 
   const purchase = async (e) => {
-    e.preventDefault();
+    if(e)
+      e.preventDefault();
     await buyTokens(dispatch,ethVal, contract);
   }
 
   return (
       <Container className="py-2">
-        <Row className="row justify-content-center">
+        <Row className="justify-content-center">
           <Col md={4}>
             <Form onSubmit={connectAccount}>
               <Row>
@@ -63,23 +65,33 @@ const MyFirstToken = () => {
               </Row>
             </Form>
           </Col>
-        </Row>
+      </Row>
+      <Row className="justify-content-center py-2">
+        <Col md={2}>
+            <b>Exchange Rate</b>
+        </Col>
+        <Col md={2}>
+          <p><Badge variant="primary">1</Badge> <b>ETH</b> = <Badge variant="primary">{rate}</Badge> <b>MFT</b></p>
+        </Col>
+      </Row>
         <Row className="justify-content-center py-3">
             <Col md={6}>
               <ListGroupItem>
-                <b>Contract Name:</b> {contractData.name}<br/>
-                <b>Contract Symbol:</b> {contractData.symbol}<br />
-                <b>Total Supply:</b> {contractData.totalSupply}<br />
-                <b>Contract Address:</b> {contractData.address}<br />
-                <b>Balance of Token:</b> {contractData.balanceOfAddress}<br/>
-                <b>Owner:</b> {contractData.owner}<br />
-                <b>Balance of Owner:</b> {contractData.balanceOfOwner}<br/>
+                <b>Token Name:</b> {contractData.tokenName}<br/>
+                <b>Token Symbol:</b><Badge variant="primary"> {contractData.tokenSymbol}</Badge><br />
+                <b>Total Token Supply:</b> {contractData.tokenSupply}<br /><br />
+                <b>Token Address:</b> {contractData.tokenAddress}<br />
+                <b>Available Tokens:</b> {contractData.balanceOfTokenAddress}<br/><br/>
+                <b>Token Owner:</b> {contractData.tokenOwner}<br />
+                <b>Balance of Token Owner:</b> {contractData.balanceOfTokenOwner}<br/>
               </ListGroupItem>
             </Col>
             <Col md={6}>
               <ListGroupItem>
-              <b>Your Account:</b> {accountData.account}<br/>
-              <b>Your Balance:</b> {accountData.balance+` ETH`}
+              <b>Your Connected Account:</b> {accountData.account}<br/>
+            <b>Your Account Balance:</b><br/>
+            <Badge variant="primary">{accountData.balance}</Badge> <b>ETH</b><br/>
+            <Badge variant="primary">{contractData.mftBalanceOfConnectedAccount}</Badge> <b>MFT</b>
               </ListGroupItem>
           </Col>
         </Row>
@@ -91,20 +103,17 @@ const MyFirstToken = () => {
                 type="text"
                 placeholder="Enter Ether"
                 value={ethVal}
-                onChange={(e) => { setEthValue(e.target.value) }} />
+              onChange={(e) => { setEthValue(e.target.value) }} />
             </Form.Group>
             <Form.Group controlId="to">
               <Form.Label>To MFT</Form.Label>
-              <Form.Control type="text" placeholder="Associated MFT " disabled />
-            </Form.Group>
+              <Form.Control type="text" value={ethVal * rate} placeholder="Associated MFT " disabled />
+          </Form.Group>
+            <small>MFT Token you will receive</small>
             <Button variant="primary" type="submit" disabled={accountData.account ? false : true}>
-                Buy
+                Buy MFT
               </Button>
         </Form>
-      </Row>
-      <Row>
-          <span className="text-muted">Exchange Rate</span>
-          <span className="text-muted">1 ETH = 100 MFT</span>
       </Row>
       </Container>
     )

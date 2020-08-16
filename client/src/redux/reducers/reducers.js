@@ -19,13 +19,14 @@ function web3(state = {
 function contract(state = {
   contract:null,
   contractData: {
-    name: 'Loading..',
-    symbol: 'Loading..',
-    totalSupply: 0,
-    owner: 'Loading..',
-    balanceOfOwner: 0,
-    address: 'Loading..',
-    balanceOfAddress: 0,
+    tokenName: 'Loading..',
+    tokenSymbol: 'Loading..',
+    tokenSupply: 0,
+    tokenOwner: 'Loading..',
+    balanceOfTokenOwner: 0,
+    tokenAddress: 'Loading..',
+    balanceOfTokenAddress: 0,
+    mftBalanceOfConnectedAccount: 0
   }
 }, action) {
   switch (action.type) {
@@ -33,6 +34,14 @@ function contract(state = {
       return { ...state, contract: action.contract };
     case 'CONTRACT_DATA_LOADED':
       return { ...state, contractData: action.contractData };
+    case 'TOKEN_PURCHASED':
+      return {
+        ...state,
+        contractData: {
+          mftBalanceOfConnectedAccount: state.contractData.mftBalanceOfConnectedAccount + action.purchasedMFT,
+          ...state.contractData
+        }
+      }
     default:
       return state;
   }

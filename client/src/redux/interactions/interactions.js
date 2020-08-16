@@ -1,5 +1,5 @@
 import getWeb3 from "../../getWeb3";
-import { web3Loaded, contractLoaded, accountLoaded, contractDataLoaded } from "../actions/actions";
+import { web3Loaded, contractLoaded, accountLoaded, contractDataLoaded,tokenPurchased } from "../actions/actions";
 import MyFirstTokenContract from "../../contracts/MyFirstToken.json";
 
 
@@ -33,20 +33,25 @@ export const loadContract = async (dispatch, web3) => {
 }
 
 export const loadContractData = async (dispatch, contract) => {
-  const name = await contract.methods.name().call();
-  const symbol = await contract.methods.symbol().call();
-  const totalSupply = await contract.methods.totalSupply().call();
-  const owner = await contract.methods.owner().call();
-  const balanceOfOwner = await contract.methods.balanceOf(owner).call();
-  const balanceOfAddress = await contract.methods.balanceOf(contract._address).call();
+  const web3 = await getWeb3();
+  const accounts = await web3.eth.getAccounts();
+  const account = accounts[0];
+  const tokenName = await contract.methods.name().call();
+  const tokenSymbol = await contract.methods.symbol().call();
+  const tokenSupply = await contract.methods.totalSupply().call();
+  const tokenOwner = await contract.methods.owner().call();
+  const balanceOfTokenOwner = await contract.methods.balanceOf(tokenOwner).call();
+  const balanceOfTokenAddress = await contract.methods.balanceOf(contract._address).call();
+  const mftBalance=  await contract.methods.balanceOf(account).call()
   const contractData = {
-    name,
-    symbol,
-    totalSupply,
-    owner,
-    balanceOfOwner,
-    address:contract._address,
-    balanceOfAddress
+    tokenName,
+    tokenSymbol,
+    tokenSupply,
+    tokenOwner,
+    balanceOfTokenOwner,
+    tokenAddress:contract._address,
+    balanceOfTokenAddress,
+    mftBalanceOfConnectedAccount : web3.utils.fromWei(mftBalance, 'Ether')
   }
   dispatch(contractDataLoaded(contractData));
   return contractData;
@@ -56,16 +61,17 @@ export const buyTokens = async (dispatch, ethVal, contract) => {
   try {
     const web3 = await getWeb3();
     const accounts = await web3.eth.getAccounts();
-    const owner = await contract.methods.owner().call();
-    const result = await contract.methods.buyTokens().send({
+    await contract.methods.buyTokens().send("Buy MFT","MFT Token Sale",{
         from: accounts[0],
-        to: owner,
-        gas: 30000,
+        to: contract._address,
+        gas: 5000000,
         value: web3.utils.toWei(ethVal, 'Ether')
+    }).on("transactionHash", hash => {
+        console.log("transaction hash", hash);
     });
-    console.log(result);
-    // dispatch(contractDataLoaded(contractData));
-    // return contractData;
+    const purchasedMFT = ethVal * 100;
+    dispatch(tokenPurchased(purchasedMFT));
+    return purchasedMFT;
   } catch (e) {
     console.log(e.message);
   }

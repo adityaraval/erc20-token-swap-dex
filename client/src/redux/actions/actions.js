@@ -25,3 +25,10 @@ export function contractDataLoaded(contractData){
     contractData
   }
 }
+
+export function tokenPurchased(purchasedMFT) {
+  return {
+    type: 'TOKEN_PURCHASED',
+    purchasedMFT
+  }
+}
