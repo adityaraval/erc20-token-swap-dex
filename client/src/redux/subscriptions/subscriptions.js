@@ -1,4 +1,4 @@
-import { loadAccount } from "./interactions";
+import { loadAccount } from "../interactions/interactions";
 
 export const subscribeToAccountsChanging = (dispatch, web3) => {
   window.ethereum.on('accountsChanged', async function (accounts) {

@@ -5,10 +5,10 @@ export function web3Loaded(connection){
   }
 }
 
-export function accountLoaded(account){
+export function accountLoaded(accountData){
   return {
     type: 'ACCOUNT_LOADED',
-    account
+    accountData
   }
 }
 
@@ -19,9 +19,9 @@ export function contractLoaded(contract){
   }
 }
 
-export function valueLoaded(value){
+export function contractDataLoaded(contractData){
   return {
-    type: 'VALUE_LOADED',
-    value
+    type: 'CONTRACT_DATA_LOADED',
+    contractData
   }
 }
