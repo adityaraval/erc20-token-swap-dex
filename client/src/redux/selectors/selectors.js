@@ -5,12 +5,13 @@ import {createSelector} from 'reselect';
 const web3 = state => get(state, 'web3.connection', null);
 export const web3Selector = createSelector(web3, w => w);
 
-const account = state => get(state, 'web3.account', null);
-export const accountSelector = createSelector(account, a => a);
+const accountData = state => get(state, 'web3.accountData', null);
+export const accountDataSelector = createSelector(accountData, a => a);
 
 //CONTRACT
 const contract = state => get(state, 'contract.contract', null);
 export const contractSelector = createSelector(contract, a => a);
 
-const value = state => get(state, 'contract.value', null);
-export const valueSelector = createSelector(value, a => a);
+//CONTRACT DATA
+const contractData = state => get(state, 'contract.contractData', null);
+export const contractDataSelector = createSelector(contractData, n => n);
