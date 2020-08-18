@@ -11,3 +11,28 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.wallet-connecter{
+  position: relative;
+}
+.offline{
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #e90000;
+  border: 2px solid #e90000;
+  right: 10px;
+  top: 16px;
+  position: absolute;
+}
+
+.online{
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #388E3C;
+  border: 2px solid #388E3C;
+  right: 10px;
+  top: 16px;
+  position: absolute;
+}
