@@ -21,6 +21,8 @@
   },
   "homepage": "https://github.com/adityaraval/truffle-box-react-redux-boilderplate#readme",
   "dependencies": {
-    "@openzeppelin/contracts": "3.1.0"
+    "@openzeppelin/contracts": "3.1.0",
+    "@truffle/hdwallet-provider": "^1.0.42",
+    "dotenv": "^8.2.0"
   }
 }

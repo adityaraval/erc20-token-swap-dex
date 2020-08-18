@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@bumaga/tabs": "^0.2.0",
     "bootstrap": "^4.5.2",
     "lodash": "^4.17.20",
     "react": "16.13.1",
